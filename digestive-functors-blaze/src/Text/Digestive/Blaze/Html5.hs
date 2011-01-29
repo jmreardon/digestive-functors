@@ -2,6 +2,7 @@
 module Text.Digestive.Blaze.Html5
     ( BlazeFormHtml
     , inputText
+    , inputHidden
     , inputTextArea
     , inputTextRead
     , inputPassword
@@ -54,6 +55,16 @@ inputText :: (Monad m, Functor m, FormInput i f)
 inputText = Forms.inputString $ \id' inp -> createFormHtml $ \cfg ->
     applyClasses' [htmlInputClasses] cfg $
         H.input ! A.type_ "text"
+                ! A.name (H.stringValue $ show id')
+                ! A.id (H.stringValue $ show id')
+                ! A.value (H.stringValue $ fromMaybe "" inp)
+
+inputHidden :: (Monad m, Functor m, FormInput i f)
+            => Maybe String
+            -> Form m i e BlazeFormHtml String
+inputHidden = Forms.inputString $ \id' inp -> createFormHtml $ \cfg ->
+    applyClasses' [htmlInputClasses] cfg $
+        H.input ! A.type_ "hidden"
                 ! A.name (H.stringValue $ show id')
                 ! A.id (H.stringValue $ show id')
                 ! A.value (H.stringValue $ fromMaybe "" inp)
